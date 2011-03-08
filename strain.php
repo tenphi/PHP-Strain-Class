@@ -88,22 +88,18 @@ class Strain {
 	 * $return - Объект результатов фильтрации повторяющий структуру проверяемых
 	 * 		данных.
 	 */
-	public static function filtering(&$data, $filter, $force = 3) {
-		// Приводим к стандартному виду + рекурсивно извлекаем фильтры.
-		self::parse($filter);
+	public static function filtering(&$data, $scheme, $force = 3) {
 		// $filter - имя фильтра.
-		if (is_string($filter)) {
-			$func = self::$_filters[$filter];
-			$return = $func($data);
-			if ($return !== false) return $return;
-		}
+		if (is_string($scheme)) {
+			$scheme = self::$_filters[$scheme];
+			$return = self::filtering($data, $scheme, $force);
+		} else
 		// $filter - функция
-		if (is_object($filter) && get_class($filter) == 'Closure') {
-			$return = $filter($data);
-			if ($return !== false) return $return;
+		if (is_object($scheme) && get_class($scheme) == 'Closure') {
+			$return = $scheme($data);
 		} else
 		// $filter - объект/схема фильтрации
-		if (is_object($filter)) {
+		if (is_object($scheme)) {
 			// Если проверяемые данные не являются объектом, то превращаем его
 			// в пустой объект.
 			if (!is_object($data)) {
@@ -118,9 +114,9 @@ class Strain {
 			if ($force > 1) foreach ($data as $name => $value) {
 				// Если в проверяемом объекте есть свойста не указанные в фильтре,
 				// то удаляем его.
-				if (!isset($filter->$name)) unset($data->$name);
+				if (!isset($scheme->$name)) unset($data->$name);
 			}
-			foreach ($filter as $name => $fil) {
+			foreach ($scheme as $name => $fil) {
 				// Если в проверяемом объекте нет свойста указанного в фильтре,
 				// то создаем его.
 				if (!isset($data->$name)) {
@@ -132,22 +128,32 @@ class Strain {
 				}
 				$return->$name = self::filtering($data->$name, $fil, $force);
 			}
-			return $return;
-		}
-		// $filter - массив/схема фильтрации
-		if (is_array($filter)) {
-			foreach ($filter as $name => $options) {
-				$func = self::$_filters[$name];
-				if (!is_callable($func)) {
-					$return = self::filtering($data, $name, $force);
+		} else
+		// $scheme - массив/схема фильтрации
+		if (is_array($scheme)) {
+			foreach ($scheme as $key => $sch) {
+				if (is_int($key)) {
+					if (!self::it($data, $sch, $force) && is_object($sch)) {
+						$return = null;
+					} else {
+						$return = self::$result;
+					}
 				} else {
-					$return = $func($data, $options);
+					$filter = self::$_filters[$key];
+					if (!is_callable($filter)) {
+						$return = self::filtering($data, $filter, $force);
+					} else {
+						$return = $filter($data, $sch);
+					}
 				}
 				if ($return !== null) break;
 			}
-			if ($return !== false) return $return; 
 		}
-		return null;
+		if ($return !== false && $return !== null) {
+			return $return;
+		} else {
+			return null;
+		}
 	}
 	
 	/*
@@ -158,6 +164,16 @@ class Strain {
 	public static function it(&$data, $filter, $force = 3) {
 		self::$result = self::filtering($data, $filter, $force);
 		return self::bool(self::$result);
+	}
+	
+	/*
+	 * Strain::check() - аналогично Strain::it(), но возвращает обратное ему значение.
+	 * Записывает результат фильтрации в Strain::$result.
+	 * @return (bool)
+	 */
+	public static function check(&$data, $filter, $force = 3) {
+		self::$result = self::filtering($data, $filter, $force);
+		return !self::bool(self::$result);
 	}
 	
 	/*
@@ -212,57 +228,6 @@ class Strain {
 		return false;
 	}
 	
-	/* Strain::parse() - приведение фильтра к стандартному виду, рекурсивное 
-	 * 		извление фильтров.
-	 * @param $filter (mixed) - фильтр.
-	 * @return null
-	 */
-	public static function parse(&$filter) {
-		// $filter - имя фильтра
-		if (is_string($filter)) {
-			if (isset(self::$_filters[$filter])) {
-				if (!is_callable(self::$_filters[$filter])) {
-					$filter = self::$_filters[$filter];
-					self::parse($filter);
-				}
-				return;
-			} else {
-				trigger_error('Filter `' . $filter . '` not found.', E_USER_WARNING);
-			}
-		};
-		// $filter - объект содержащий фильтры для свойств фильтруемого объекта
-		if (is_object($filter) && !is_callable($filter)) {
-			foreach ($filter as $key => &$value) {
-				self::parse($value);
-			}
-		}
-		// $filter - массив фильтров
-		if (is_array($filter)) {
-			$keys = array_keys($filter);
-			$newfilter = array();
-			for ($i = 0; $i < count($keys); $i++) {
-				$key = $keys[$i];
-				$value = &$filter[$key];
-				if (is_int($key) && is_string($value)) {
-					if (isset(self::$_filters[$value])) {
-						$link = &self::$_filters[$value];
-						if (is_callable($link)) {
-							$newfilter[$value] = null;
-						} else {
-							$newfilter[$value] = $link;
-						}
-						self::parse($newfilter[$value]);
-						unset($filter[$key]);
-					}
-				} else {
-					$newfilter[$key] = &$value;
-				}
-			}
-			$filter = $newfilter;
-		};
-		return null;
-	}
-	
 }
 
 Strain::add('array_of', function(&$value, $options) {
@@ -290,11 +255,10 @@ Strain::add('mixed', function(&$value, $options = null) {
 	return $flag;
 });
 
-Strain::add('string', function(&$value, $options =null) {
+Strain::add('string', function(&$value, $options = null) {
 	$value = (string) $value;
 	$length = strlen($value);
 	if ($options && is_int($options) && $length > $options) {
 		$value = substr($value, 0, $options);
 	}
 });
-
