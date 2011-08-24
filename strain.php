@@ -7,10 +7,6 @@
  * @version 0.4
  */
 
-namespace lexpro\tools;
-
-use lexpro\Exception;
-
 class Strain {
 	
 /**
