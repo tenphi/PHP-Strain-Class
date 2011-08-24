@@ -1,124 +1,94 @@
 <?php
-/*
- * @class Strain - Ð¤Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ñ Ð´Ð°Ð½Ð½Ñ‹Ñ… (ÐŸÑ€Ð¸Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ Ð¸ Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ñ)
- * @version 0.3
- * @copyright Tenphi - http://tenphi.com/
- * 
- * ÐšÐ»Ð°ÑÑ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ Ð´ÐµÐºÐ»Ð°Ñ€Ð°Ñ‚Ð¸Ð²Ð½ÑƒÑŽ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸ÑŽ Ð´Ð°Ð½Ð½Ñ‹Ñ…. 
- * Ð”Ð»Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ ÑÑ…ÐµÐ¼Ð° (Ð¡Ð¤), ÐºÐ¾Ñ‚Ð¾Ñ€Ð°Ñ Ð¿Ð¾Ð»Ð½Ð¾ÑÑ‚ÑŒÑŽ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ÑÐµÑ‚ 
- * ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñƒ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€ÑƒÐµÐ¼Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°, Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð²Ð¼ÐµÑÑ‚Ð¾ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹ Ð² Ð½Ñ‘Ð¼ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ
- * Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð° Ð¸Ð»Ð¸ Ð´Ñ€ÑƒÐ³Ð¸Ðµ Ð¡Ð¤.
- * 
- * Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ Ð¼Ð¾Ð¶ÐµÑ‚ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÑÑ‚ÑŒ Ð´Ð²Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸: Ð¿Ñ€Ð¸Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ Ð¸ Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ñ.
- * Ð¤Ð¸Ð»ÑŒÑ‚Ñ€-Ð¿Ñ€Ð¸Ð²ÐµÐ´ÐµÐ½Ð¸Ñ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·ÑƒÐµÑ‚ Ð²Ñ…Ð¾Ð´Ð½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð² Ð½ÑƒÐ¶Ð½Ñ‹Ð¹ Ñ‚Ð¸Ð¿ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð¸Ð»Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ð¾ 
- * Ð¸Ð·Ð¼ÐµÐ½ÑÐµÑ‚ ÐµÐ³Ð¾ ÑÐ¾Ð³Ð»Ð°ÑÐ½Ð¾ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð½Ð¾Ð¹ Ð»Ð¾Ð³Ð¸ÐºÐ¸.
- * 
- * Strain::add('integer', function(&$value, $options = null) {
- * 	$value = (int) $value;
- * });
- * 
- * Ð¤Ð¸Ð»ÑŒÑ‚Ñ€-Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ð¸ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÑ‚ ÑƒÐ´Ð¾Ð²Ð»ÐµÑ‚Ð²Ð¾Ñ€ÑÐµÑ‚ Ð»Ð¸ Ð´Ð°Ð½Ð½Ð¾Ðµ ÐºÐ°ÐºÐ¾Ð¼Ñƒ-Ñ‚Ð¾ ÑƒÑÐ»Ð¾Ð²Ð¸ÑŽ Ð¸ Ð² ÑÐ»ÑƒÑ‡Ð°Ðµ 
- * Ð½ÐµÑƒÐ´Ð°Ñ‡Ð¸ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ true. (Ð—Ð´ÐµÑÑŒ Ð¸ Ð´Ð°Ð»ÐµÐµ Ð¿Ð¾ Ñ‚ÐµÐºÑÑ‚Ñƒ TRUE Ñ‚Ð°ÐºÐ¶Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ ÑÐ²Ð»ÑÑ‚ÑŒÑÑ Ð»ÑŽÐ±Ñ‹Ð¼
- * Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸ÐµÐ¼ Ð¾Ñ‚Ð»Ð¸Ñ‡Ð½Ñ‹Ð¼ Ð¾Ñ‚ NULL Ð¸ FALSE, ÐÐ°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, ÑÑ‚Ñ€Ð¾ÐºÐ¾Ð¹ Ñ Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸ÐµÐ¼ Ð²Ð¾Ð·Ð½Ð¸ÐºÑˆÐµÐ¹ Ð¾ÑˆÐ¸Ð±ÐºÐ¸).
- *
- * Strain::add('is_integer', function(&$value, $options = null) {
- * 	if(!is_int($value)) return true;
- * });
- * 
- * Ð•ÑÐ»Ð¸ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ Ð²ÐµÑ€Ð½ÑƒÐ»Ð° true Ð¸Ð»Ð¸ false, Ñ‚Ð¾ Ð´Ð°Ð»ÑŒÐ½ÐµÐ¹ÑˆÐ°Ñ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð´Ð°Ð½Ð½Ñ‹Ñ… 
- * Ð½Ðµ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÑÑ, Ð½Ð¾ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ true ÑÐ²Ð»ÑÐµÑ‚ÑÑ ÑÐ²Ð¸Ð´ÐµÑ‚ÐµÐ»ÑŒÑÑ‚Ð²Ð¾Ð¼ Ð·Ð°Ñ„Ð¸ÐºÑÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ð¹
- * Ð¾ÑˆÐ¸Ð±ÐºÑƒ, Ð² Ñ‚Ð¾ Ð²Ñ€ÐµÐ¼Ñ ÐºÐ°Ðº false Ð¾Ð·Ð½Ð°Ñ‡Ð°ÐµÑ‚ Ð²ÑÐµÐ³Ð¾ Ð»Ð¸ÑˆÑŒ Ð¾ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÑƒ. Ð­Ñ‚Ð¾ Ð¿Ð¾Ð»ÐµÐ·Ð½Ð¾,
- * ÐµÑÐ»Ð¸ Ð½ÑƒÐ¶Ð½Ð¾, Ð½Ð°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ð»Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ null'Ð¾Ð¼ Ð¸ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ ÐµÑÐ»Ð¸ Ð½ÐµÑ‚ - 
- * Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÑƒ. (Ð£ÑÐ»Ð¾Ð²Ð¸Ðµ 'can be null')
- * 
- * Strain::add('null', function(&$value, $options) {
- * 	if ($value === null) return false;
- * });
- * 
- * ÐŸÑ€Ð¾ÑÑ‚Ð¾Ð¹ Ð¿Ñ€Ð¸Ð¼ÐµÑ€ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ:
- * $text = 'Text';
- * Strain::it('Text', 'string'); // Ð²ÐµÑ€Ð½ÐµÑ‚ false
- * 
- * ÐŸÑ€Ð¸Ð¼ÐµÑ€ Ñ Ð¾Ð¿Ñ†Ð¸ÑÐ¼Ð¸:
- * $text = 'Text';
- * Strain::it($text, array('string', 'length' => array(2,10);
- * 
- * Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ ÑÐ°Ð¼ Ð¿Ð¾ ÑÐµÐ±Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¼Ð°ÑÑÐ¸Ð²Ð¾Ð¼ Ð¸Ð¼ÐµÐ½ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²: 
- * Strain::add('text', array('string', 'length' => array(2, 10)));
- * 
- * ÐŸÑ€Ð¸Ð¼ÐµÑ€ Ñ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°Ð¼Ð¸:
- * $user = (object) array(
- * 		'email' => 'user@mail.com',
- * 		'name' => 'User',
- * 		'address' => (object) array(
- * 			'city' => 'Default City',
- * 			'street' => 'Big'
- * 		 )
- * );
- * $valid = (object) array(
- * 		'email' => ('email', 'UserExists'),
- * 		'name' => array('string', 'regexp' => '/^[A-Za-z0-9_-]{3,20}$/'),
- * 		'address' => (object) array(
- * 			'city' => 'string',
- * 			'street' => 'string'
- * 		)
- * );
- *
- * Strain::it($user, $valid);
- * 
+/**
+ * Îáðàáîò÷èê äàííûõ. Àíàëèçèðóåò äàííûå èñïîëüçóÿ ñïåöèàëüíóþ ñõåìó ôèëüòðàöèè.
+ * Ðåøàåò ïðîáëåìû âàëèäàöèè è ñàíèòèçàöèè äàííûõ. Óìååò ïðèâîäèòü äàííûå ê íóæíîìó âèäó.
+ * @copyright Copyright Yamanov Andrey (tenphi@gmail.com)
+ * @link http://tenphi.com
+ * @version 0.4
  */
+
+namespace lexpro\tools;
+
+use lexpro\Exception;
 
 class Strain {
 	
-	// ÐÑÑÐ¾Ñ†Ð¸Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð² Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð² $name => $filter.
-	private static $_filters = array();
+/**
+ * Àññîöèàòèâíûé ìàññèâ ñõåì (ôèëüòðîâ) $name => $scheme.
+ * @var array
+ * @access private
+ */
+	private static $_schemes = array();
 	
-	// Ð”Ð¾ÑÑ‚ÑƒÐ¿ Ðº Ð¾Ð±ÑŠÐµÐºÑ‚Ñƒ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð² Ð¿Ð¾ÑÐ»Ðµ Ð²Ñ‹Ð·Ð¾Ð²Ð° Strain::it().
-	public static $result = array();
+/**
+ * Îáúåêò ðåçóëüòàòîâ ôèëüòðàöèè.
+ * @var array
+ * @access public
+ */
+	public static $errors = array();
 	
-	/* 
-	 * Strain::filtering() - Ð·Ð°Ð¿ÑƒÑÐº Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸.
-	 * @param $data (mixed) - Ð¾Ð±ÑŠÐµÐºÑ‚ Ð´Ð»Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸.
-	 * @param $filter (mixed) - Ð¸Ð¼Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð° Ð¸Ð»Ð¸ ÑÑ…ÐµÐ¼Ð° Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
-	 * $param $force (integer) - Ð•ÑÐ»Ð¸:
-	 * 		0: ÐÐµ Ð¼ÐµÐ½ÑÐµÑ‚ ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñƒ Ð´Ð°Ð½Ð½Ñ‹Ñ…;
-	 * 		1: Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ Ð² ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñƒ Ð´Ð°Ð½Ð½Ñ‹Ñ… ÑÐ²Ð¾Ð¹ÑÑ‚Ð²Ð° ÑƒÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ðµ Ð² ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²;
-	 * 		2: Ð£Ð´Ð°Ð»ÑÐµÑ‚ Ð¸Ð· ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ… ÑÐ²Ð¾Ð¹ÑÑ‚Ð²Ð° Ð½Ðµ ÑƒÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ðµ Ð² ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²;
-	 * 		3: 1 Ð¸ 2 Ð²Ð¼ÐµÑÑ‚Ðµ. (ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ)
-	 * $return - ÐžÐ±ÑŠÐµÐºÑ‚ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð² Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ÑÑŽÑ‰Ð¸Ð¹ ÑÑ‚Ñ€ÑƒÐºÑ‚ÑƒÑ€Ñƒ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼Ñ‹Ñ…
-	 * 		Ð´Ð°Ð½Ð½Ñ‹Ñ….
-	 */
-	public static function filtering(&$data, $scheme, $force = 3) {
-		// $filter - Ð¸Ð¼Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°.
-		if (is_string($scheme)) {
-			$scheme = self::$_filters[$scheme];
-			$return = self::filtering($data, $scheme, $force);
-		} else
-		// $filter - Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ
-		if (is_object($scheme) && get_class($scheme) == 'Closure') {
+/**
+ * Äàííûå äëÿ âàëèäàöèè.
+ * @var array
+ * @access public
+ */
+	public static $data = array();
+	
+/**
+ * Èíôîðìàöèÿ î âàëèäíîñòè îáðàáîòàííûõ äàííûõ. TRUE / FALSE.
+ * @var boolean
+ * @access public
+ */
+	public static $valid = false;
+
+	const NOCHANGE = 0;
+	const COMPLETE = 1;
+	const TRUNCATE = 2;
+	const SANITIZE = 3;
+	
+/**
+ * Çàïóñê ôèëüòðàöèè.
+ * @param mixed $data Îáúåêò äëÿ ôèëüòðàöèè.
+ * @param mixed $filter Èìÿ ôèëüòðà èëè ñõåìà ôèëüòðàöèè
+ * @param integer $force Åñëè:
+ * 		self::NOCHANGE - Íå ìåíÿåò ñòðóêòóðó äàííûõ;
+ * 		self::COMPLETE - Äîáàâëÿåò â ñòðóêòóðó äàííûõ ñâîéñòâà óêàçàííûå â ñòðóêòóðå ôèëüòðîâ;
+ * 		self::TRUNCATE - Óäàëÿåò èç ñòðóêòóðû äàííûõ ñâîéñòâà íå óêàçàííûå â ñòðóêòóðå ôèëüòðîâ;
+ * 		self::SANITIZE - Äåéñòâèÿ COMPLETE è TRUNCATE âìåñòå.
+ * @return Îáúåêò ðåçóëüòàòîâ ôèëüòðàöèè ïîâòîðÿþùèé ñòðóêòóðó ïðîâåðÿåìûõ
+ * 		äàííûõ.
+ * @access private
+ */
+	private static function _filter(&$data, &$scheme, $force) 
+	{
+		if (is_callable($scheme)) {
 			$return = $scheme($data);
-		} else
-		// $filter - Ð¾Ð±ÑŠÐµÐºÑ‚/ÑÑ…ÐµÐ¼Ð° Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
-		if (is_object($scheme)) {
-			// Ð•ÑÐ»Ð¸ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼Ñ‹Ðµ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð½Ðµ ÑÐ²Ð»ÑÑŽÑ‚ÑÑ Ð¾Ð±ÑŠÐµÐºÑ‚Ð¾Ð¼, Ñ‚Ð¾ Ð¿Ñ€ÐµÐ²Ñ€Ð°Ñ‰Ð°ÐµÐ¼ ÐµÐ³Ð¾
-			// Ð² Ð¿ÑƒÑÑ‚Ð¾Ð¹ Ð¾Ð±ÑŠÐµÐºÑ‚.
+		} else if (is_string($scheme)) {
+			if (isset(self::$_schemes[$scheme])) {
+				$return = self::_filter($data, self::$_schemes[$scheme], $force);
+			} else {
+				throw new Exception('Strain scheme `' . $scheme . '` not found.', E_USER_ERROR);
+			};
+		} else if (is_object($scheme)) {
+			// Åñëè ïðîâåðÿåìûå äàííûå íå ÿâëÿþòñÿ îáúåêòîì, òî ïðåâðàùàåì åãî
+			// â ïóñòîé îáúåêò.
 			if (!is_object($data)) {
 				if ($force == 3) {
 					$data = (object) array();
 				} else {
 					return true;
-				}				
+				}
 			}
-			// Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°Ñ‚ÑŒ Ð² Ð´Ð°Ð½Ð½Ð¾Ð¼ ÑÐ»ÑƒÑ‡Ð°Ðµ Ð±ÑƒÐ´ÐµÐ¼ Ð¾Ð±ÑŠÐµÐºÑ‚, Ð¿Ð¾ÑÑ‚Ð¾Ð¼Ñƒ ÑÐ¾Ð·Ð´Ð°Ñ‘Ð¼ ÐµÐ³Ð¾.
+			// Âîçâðàùàòü â äàííîì ñëó÷àå áóäåì îáúåêò, ïîýòîìó ñîçäà¸ì åãî.
 			$return = (object) array();
-			if ($force > 1) foreach ($data as $name => $value) {
-				// Ð•ÑÐ»Ð¸ Ð² Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼Ð¾Ð¼ Ð¾Ð±ÑŠÐµÐºÑ‚Ðµ ÐµÑÑ‚ÑŒ ÑÐ²Ð¾Ð¹ÑÑ‚Ð° Ð½Ðµ ÑƒÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ðµ Ð² Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ðµ,
-				// Ñ‚Ð¾ ÑƒÐ´Ð°Ð»ÑÐµÐ¼ ÐµÐ³Ð¾.
+			if ($force > 1) foreach ($data as $name => &$value) {
+				// Åñëè â ïðîâåðÿåìîì îáúåêòå åñòü ñâîéñòà íå óêàçàííûå â ôèëüòðå,
+				// òî óäàëÿåì åãî.
 				if (!isset($scheme->$name)) unset($data->$name);
 			}
-			foreach ($scheme as $name => $fil) {
-				// Ð•ÑÐ»Ð¸ Ð² Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼Ð¾Ð¼ Ð¾Ð±ÑŠÐµÐºÑ‚Ðµ Ð½ÐµÑ‚ ÑÐ²Ð¾Ð¹ÑÑ‚Ð° ÑƒÐºÐ°Ð·Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð² Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ðµ,
-				// Ñ‚Ð¾ ÑÐ¾Ð·Ð´Ð°ÐµÐ¼ ÐµÐ³Ð¾.
+			foreach ($scheme as $name => &$fil) {
+				// Åñëè â ïðîâåðÿåìîì îáúåêòå íåò ñâîéñòà óêàçàííîãî â ôèëüòðå,
+				// òî ñîçäàåì åãî.
 				if (!isset($data->$name)) {
 					if ($force % 2 == 1) {
 						$data->$name = null;
@@ -126,139 +96,136 @@ class Strain {
 						continue;
 					}
 				}
-				$return->$name = self::filtering($data->$name, $fil, $force);
+				$return->$name = self::_filter($data->$name, $fil, $force);
 			}
 		} else
-		// $scheme - Ð¼Ð°ÑÑÐ¸Ð²/ÑÑ…ÐµÐ¼Ð° Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
+		// $scheme - ìàññèâ/ñõåìà ôèëüòðàöèè
 		if (is_array($scheme)) {
-			foreach ($scheme as $key => $sch) {
+			foreach ($scheme as $key => &$sch) {
 				if (is_int($key)) {
-					if (!self::it($data, $sch, $force) && is_object($sch)) {
+					if (self::my($data, $sch, $force)->valid) {
 						$return = null;
 					} else {
-						$return = self::$result;
+						$return = self::$errors;
 					}
 				} else {
-					$filter = self::$_filters[$key];
-					if (!is_callable($filter)) {
-						$return = self::filtering($data, $filter, $force);
+					if (isset(self::$_schemes[$key])) {
+						if (is_callable(self::$_schemes[$key])) {
+							$filter = self::$_schemes[$key];
+							$return = $filter($data, $sch);
+						} else {
+							$return = self::_filter($data, self::$_schemes[$key], $force);
+						}
 					} else {
-						$return = $filter($data, $sch);
+						throw new Exception('Strain scheme `' . $key . '` not found.', E_USER_ERROR);
 					}
 				}
 				if ($return !== null) break;
 			}
 		}
-		if ($return !== false && $return !== null) {
-			return $return;
-		} else {
-			return null;
-		}
+		return $return;
 	}
 	
-	/*
-	 * Strain::it() - Ð°Ð½Ð°Ð»Ð¾Ð³Ð¸Ñ‡Ð½Ð¾ Strain::filtering(), Ð½Ð¾ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð¿Ñ€Ð¾ÑÑ‚Ð¾ true/false.
-	 * Ð—Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð² Strain::$result.
-	 * @return (bool)
-	 */
-	public static function it(&$data, $filter, $force = 3) {
-		self::$result = self::filtering($data, $filter, $force);
-		return self::bool(self::$result);
+/**
+ * Ìåòîä èíèöèèðóþùèé îáðàáîòêó äàííûõ. Àðãóìåíòû àíàëîãè÷íû Strain::_filter().
+ * @return Îáúåêò ñîäåðæàùèé ïîëíóþ èíôîðìàöèÿ îá îáðàáîòêå äàííûõ.
+ * @access public
+ */
+	public static function my(&$data, &$scheme, $force) 
+	{
+		self::$data = $data;
+		self::$errors = self::_filter($data, &$scheme, $force);
+		self::$valid = !self::_bool(self::$errors);
+		return (object) array(
+			'errors' => self::$errors,
+			'data' => $data,
+			'valid' => self::$valid
+		);
 	}
 	
-	/*
-	 * Strain::check() - Ð°Ð½Ð°Ð»Ð¾Ð³Ð¸Ñ‡Ð½Ð¾ Strain::it(), Ð½Ð¾ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð¾Ð±Ñ€Ð°Ñ‚Ð½Ð¾Ðµ ÐµÐ¼Ñƒ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ.
-	 * Ð—Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð² Strain::$result.
-	 * @return (bool)
-	 */
-	public static function check(&$data, $filter, $force = 3) {
-		self::$result = self::filtering($data, $filter, $force);
-		return !self::bool(self::$result);
-	}
-	
-	/*
-	 * Strain::bool() - Ð°Ð½Ð°Ð»Ð¸Ð·Ð¸Ñ€ÑƒÐµÑ‚ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð½Ñ‹Ð¹ Ð¾Ð±ÑŠÐµÐºÑ‚, Ð¸ ÐµÑÐ»Ð¸ Ñ…Ð¾Ñ‚ÑŒ Ð¾Ð´Ð½Ð¾ Ð¸Ð· ÐµÐ³Ð¾ ÑÐ²Ð¾Ð¹ÑÑ‚Ð²
-	 * Ð¸Ð»Ð¸ Ð¿Ð¾Ð´ÑÐ²Ð¾Ð¹ÑÑ‚Ð² Ð½Ðµ Ñ€Ð°Ð²Ð½Ð¾ null, Ñ‚Ð¾ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ true, Ð¸Ð½Ð°Ñ‡Ðµ - false.
-	 */
-	public static function bool($obj) {
+/**
+ * Àíàëèçèðóåò îáúåêò ðåçóëüòàòîâ ôèëüòðàöèè.
+ * @var obj Îáúåêò ðåçóëüòàòîâ ôèëüòðàöèè.
+ * @return (boolean) - ÄÀ, åñëè áûëè íàéäåíû îøèáêè, ÍÅÒ - åñëè íå áûëè.
+ */
+	private static function _bool($obj) 
+	{
 		if (is_object($obj)) {
 			foreach ($obj as $fld) {
-				$res = is_object($fld) ? self::bool($fld) : $fld;
-				if ($res) return true;
+				$res = (is_object($fld) ? (self::_bool($fld) ? true : null) : $fld);
+				if ($res !== null) 	return true;
 			}
-		} else {
-			if ($obj) return true;
+			return false;
 		}
-		return false;
+		return ($obj !== null ? true : false);
 	}
 	
-	/* Strain::get() - Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð° Ð¿Ð¾ Ð¸Ð¼ÐµÐ½Ð¸.
-	 * @param $name (string) - Ð¸Ð¼Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°. Ð•ÑÐ»Ð¸ Ð½Ðµ Ð·Ð°Ð´Ð°Ð½, Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ÑÑ 
-	 * 		Ð¼Ð°ÑÑÐ¸Ð² Ð¸Ð· Ð²ÑÐµÑ… Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð².
-	 * @return (mixed) - Ñ„Ð¸Ð»ÑŒÑ‚Ñ€ Ð¸Ð»Ð¸ Ð¼Ð°ÑÑÐ¸Ð² Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð².
-	 */
-	public static function get($name = null) {
-		if (is_string($name) && isset(self::$_filters[$name])) return self::$_filters[$name];
-		if ($name === null) return self::$_filters;
+/**
+ * Âðàïïåð äëÿ ìåòîäà Strain::my() ñ àðãóìåíòîì $force = 3.
+ * @param mixed $data Îáðàáàòûâàåìûå äàííûå.
+ * @param mixed $scheme Ñõåìà ôèëüòðàöèè.
+ * @return Îáðàáîòàííûå äàííûå.
+ * @access public
+ */
+	public static function sanitize(&$data, &$scheme) 
+	{
+		return self::my(&$data, &$scheme, 3)->data;
 	}
 	
-	/* Strain::add() - Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°.
-	 * @param $name (string) - Ð¸Ð¼Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°.
-	 * @param $filter (mixed) - Ñ„Ð¸Ð»ÑŒÑ‚Ñ€.
-	 * @return - true, ÐµÑÐ»Ð¸ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€ Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½, false - ÐµÑÐ»Ð¸ Ð½ÐµÑ‚.
-	 */
-	public static function add($name, $filter) {
-		if (is_string($name) && $name && (is_callable($filter) || is_array($filter) || is_object($filter))) {
-			self::$_filters[$name] = $filter;
+/**
+ * Âðàïïåð äëÿ ìåòîäà Strain::my() ñ àðãóìåíòîì $force = 1.
+ * @param mixed $data Îáðàáàòûâàåìûå äàííûå.
+ * @param mixed $scheme Ñõåìà ôèëüòðàöèè.
+ * @return Îáðàáîòàííûå äàííûå.
+ * @access public
+ */
+	public static function complete(&$data, &$scheme) 
+	{
+		return self::my(&$data, &$scheme, 1)->data;
+	}
+	
+/**
+ * Âðàïïåð äëÿ ìåòîäà Strain::my() ñ àðãóìåíòîì $force = 2.
+ * @param mixed $data Îáðàáàòûâàåìûå äàííûå.
+ * @param mixed $scheme Ñõåìà ôèëüòðàöèè.
+ * @return Îáðàáîòàííûå äàííûå.
+ * @access public
+ */
+	public static function truncate(&$data, &$scheme) 
+	{
+		self::my(&$data, &$scheme, 2)->data;
+		return $data;
+	}
+	
+/**
+ * Äîáàâëåíèå ñõåìû ôèëüòðàöèè.
+ * @var string $name Íàçâàíèå ñõåìû.
+ * @var mixed $scheme Ñàìà ñõåìà.
+ * @return boolean TRUE, åñëè ñõåìà äîáàâëåíà. FALSE, åñëè ñõåìà íå äîáàâëåíà.
+ */
+	public static function add($name, $scheme) 
+	{
+		if (is_string($name) && $name && (is_callable($scheme) || is_array($scheme) || is_object($scheme))) {
+			self::$_schemes[$name] = $scheme;
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	/* Strain::remove() - ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð° Ð¿Ð¾ Ð¸Ð¼ÐµÐ½Ð¸.
-	 * @param $name (string) - Ð¸Ð¼Ñ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð°.
-	 * return (bool) - true, ÐµÑÐ»Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð¾ÑˆÐ»Ð¾ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾, false - ÐµÑÐ»Ð¸ Ð½ÐµÑ‚.
-	 */
-	public static function remove($name) {
+/**
+ * Óäàëåíèå ñõåìà ôèëüòðàöèè.
+ * @param string $name Íàçâàíèå ñõåìà.
+ * @return boolean TRUE, åñëè óäàëåíèå ïðîøëî óñïåøíî. FALSE, åñëè - íåò.
+ * @access public
+ */
+	public static function remove($name) 
+	{
 		if (is_string($name) && isset(self::$_filters[$name])) {
-			unset(self::$_filters[$name]);
+			unset(self::$_schemes[$name]);
 			return true;
 		}
 		return false;
 	}
 	
 }
-
-Strain::add('array_of', function(&$value, $options) {
-	if (!is_array($value)) {
-		$value = array();
-		return true;
-	}
-	foreach($value as &$val) {
-		Strain::it($val, $options);
-		$res = Strain::$result;
-		if (is_object($res)) {
-			if (self::bool($res)) return $bool;
-		} else if ($res !== null && $res !== false) return true;
-	}
-});
-
-Strain::add('mixed', function(&$value, $options = null) {
-	$flag = true;
-	if ($options && is_array($options)) {
-		foreach ($options as $key => $valid) {
-			if (is_string($key)) $valid = array($key => $valid);
-			if (!self::it($value, $valid)) $flag = null; // ÐžÐ´Ð½Ð¾ Ð¸Ð· ÑƒÑÐ»Ð¾Ð²Ð¸Ð¹ Ð²Ñ‹Ð¿Ð¾Ð»Ð½Ð¸Ð»Ð¾ÑÑŒ
-		}
-	}
-	return $flag;
-});
-
-Strain::add('string', function(&$value, $options = null) {
-	$value = (string) $value;
-	$length = strlen($value);
-	if ($options && is_int($options) && $length > $options) {
-		$value = substr($value, 0, $options);
-	}
-});
