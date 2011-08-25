@@ -146,7 +146,7 @@ class Strain {
 /**
  * Анализирует объект результатов фильтрации.
  * @var obj Объект результатов фильтрации.
- * @return (boolean) - ДА, если были найдены ошибки, НЕТ - если не были.
+ * @return (boolean) - TRUE, если были найдены ошибки, FALSE - если не были.
  */
 	private static function _bool($obj) 
 	{
